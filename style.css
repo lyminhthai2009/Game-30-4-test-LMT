@@ -1,0 +1,76 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #e0e0e0;
+    font-family: sans-serif;
+}
+
+#game-container {
+    display: flex;
+    flex-direction: column; /* Sắp xếp canvas và controls theo chiều dọc */
+    align-items: center;
+}
+
+canvas {
+    border: 2px solid #333;
+    background-color: #87CEEB; /* Màu nền trời xanh */
+    display: block; /* Bỏ khoảng trống thừa */
+}
+
+#controls {
+    margin-top: 15px;
+    display: flex; /* Sắp xếp các nhóm nút theo hàng ngang */
+    gap: 15px; /* Khoảng cách giữa các nhóm nút */
+    flex-wrap: wrap; /* Cho phép xuống hàng nếu không đủ chỗ */
+    justify-content: center;
+}
+
+.control-group {
+    display: flex;
+    gap: 5px; /* Khoảng cách giữa các nút trong nhóm */
+    align-items: center; /* Căn giữa các nút và text trong nhóm lực bắn */
+}
+
+#controls button {
+    padding: 8px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+}
+
+#controls button:active { /* Hiệu ứng khi nhấn nút */
+    background-color: #ccc;
+}
+
+#info-panel {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px dashed #555;
+    background-color: #f9f9f9;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#info-panel p {
+    margin: 0;
+}
+
+/* Thêm style cho thanh máu (nếu muốn vẽ trên HTML thay vì canvas) */
+.health-bar {
+    width: 100px;
+    height: 10px;
+    background-color: red;
+    border: 1px solid black;
+    position: relative; /* Để chứa thanh máu bên trong */
+}
+.health-fill {
+    height: 100%;
+    background-color: limegreen;
+    width: 100%; /* Sẽ thay đổi bằng JS */
+}

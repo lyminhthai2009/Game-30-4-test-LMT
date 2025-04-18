@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tank Duel - 30/4</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas" width="1000" height="600"></canvas>
+        <div id="controls">
+            <div class="control-group">
+                <button id="btn-move-left">← Lùi</button>
+                <button id="btn-move-right">Tiến →</button>
+            </div>
+            <div class="control-group">
+                <button id="btn-angle-down">↓ Góc</button>
+                <button id="btn-angle-up">↑ Góc</button>
+            </div>
+             <!-- Thêm nút điều chỉnh lực bắn (quan trọng cho parabol) -->
+            <div class="control-group">
+                 <button id="btn-power-down">- Lực</button>
+                 <span id="power-display">50</span> <!-- Hiển thị lực hiện tại -->
+                 <button id="btn-power-up">+ Lực</button>
+            </div>
+            <div class="control-group">
+                <button id="btn-fire">BẮN!</button>
+            </div>
+        </div>
+        <div id="info-panel">
+            <p>Level: <span id="level">1</span></p>
+            <p>Lượt: <span id="turn">Người Chơi</span></p>
+            <p>Máu Bạn: <span id="player-health">100</span></p>
+            <p>Máu Địch: <span id="enemy-health">100</span></p>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
