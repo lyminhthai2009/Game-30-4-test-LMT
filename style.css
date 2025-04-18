@@ -1,76 +1,191 @@
+/* --- Reset cơ bản & Thiết lập chung --- */
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation; /* Ngăn double-tap zoom trên mobile */
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Ngăn cuộn toàn trang */
+    background-color: #333; /* Nền tối hơn cho body */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background-color: #e0e0e0;
-    font-family: sans-serif;
 }
 
 #game-container {
     display: flex;
-    flex-direction: column; /* Sắp xếp canvas và controls theo chiều dọc */
+    flex-direction: column;
     align-items: center;
+    width: 100%;
+    height: 100%;
+    max-width: 1000px; /* Giới hạn chiều rộng tối đa */
+    max-height: 800px; /* Giới hạn chiều cao tối đa */
+    background-color: #555; /* Nền cho container */
+    padding: 5px;
+    position: relative; /* Cho loading screen */
 }
 
 canvas {
-    border: 2px solid #333;
-    background-color: #87CEEB; /* Màu nền trời xanh */
-    display: block; /* Bỏ khoảng trống thừa */
+    border: 2px solid #111;
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1000 / 600;
+    max-height: calc(100% - 150px); /* Để chừa chỗ cho controls, điều chỉnh nếu cần */
+    background-color: #87CEEB; /* Nền trời mặc định nếu ảnh chưa tải */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
 }
 
-#controls {
-    margin-top: 15px;
-    display: flex; /* Sắp xếp các nhóm nút theo hàng ngang */
-    gap: 15px; /* Khoảng cách giữa các nhóm nút */
-    flex-wrap: wrap; /* Cho phép xuống hàng nếu không đủ chỗ */
+#info-panel {
+    margin: 5px 0;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 5px;
+    display: flex;
+    gap: 10px; /* Giảm khoảng cách */
     justify-content: center;
+    flex-wrap: wrap;
+    width: calc(100% - 10px);
+    max-width: 95%;
+    font-size: clamp(0.7rem, 2.5vw, 0.9rem); /* Kích thước chữ linh hoạt */
+    color: #333;
+}
+#info-panel p { margin: 0; font-weight: 500;}
+#info-panel span { font-weight: bold; }
+#info-panel #player-health { color: #28a745; } /* Xanh lá */
+#info-panel #enemy-health { color: #dc3545; } /* Đỏ */
+#info-panel #wind-info { color: #17a2b8; } /* Xanh dương nhạt */
+
+#controls {
+    margin-top: 5px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Cột nhỏ hơn */
+    gap: 5px;
+    width: 100%;
+    padding: 0 5px;
+    user-select: none; /* Ngăn chọn text trên nút */
+    -webkit-user-select: none; /* Safari */
 }
 
 .control-group {
     display: flex;
-    gap: 5px; /* Khoảng cách giữa các nút trong nhóm */
-    align-items: center; /* Căn giữa các nút và text trong nhóm lực bắn */
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    border-radius: 5px;
+}
+.control-group span, .control-group label {
+    font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+    font-weight: bold;
+    color: #eee;
+    text-align: center;
+    flex-shrink: 0; /* Ngăn text bị thu nhỏ */
 }
 
 #controls button {
-    padding: 8px 15px;
-    font-size: 1em;
+    padding: 8px 8px; /* Padding nhỏ hơn */
+    font-size: 1.1em; /* Giữ chữ to cho dễ bấm */
+    font-weight: bold;
     cursor: pointer;
-    border: 1px solid #555;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef); /* Sáng hơn */
+    color: #343a40; /* Đậm hơn */
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+    flex-grow: 1; /* Cho nút chiếm không gian */
+    min-width: 40px;
+}
+
+#controls button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+#controls button:disabled {
+    background: #adb5bd;
+    color: #6c757d;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+#btn-fire {
+    background: linear-gradient(to bottom, #ff8a8a, #f53333); /* Đỏ tươi hơn */
+    color: white;
+    font-size: 1.2em;
+    padding: 10px 8px; /* Padding lớn hơn chút */
+}
+
+/* Tùy chỉnh nhóm chọn đạn */
+.ammo-select label { margin-right: 5px; }
+#ammo-select {
+    padding: 5px;
     border-radius: 4px;
-    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+    flex-grow: 1;
+}
+#ammo-count {
+    font-weight: bold;
+    color: #ffc107; /* Màu vàng */
+    min-width: 25px;
+    text-align: right;
 }
 
-#controls button:active { /* Hiệu ứng khi nhấn nút */
-    background-color: #ccc;
+/* Căn chỉnh nhóm di chuyển/góc */
+.move span, .angle span { min-width: 60px; }
+
+/* Hiển thị lực */
+#power-display {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #90ee90; /* Xanh lá nhạt */
+    min-width: 30px;
+    text-align: center;
 }
 
-#info-panel {
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px dashed #555;
-    background-color: #f9f9f9;
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
+/* Nút nhạc */
+#btn-toggle-music {
+    background: #6c757d;
+    color: white;
+}
+#btn-toggle-music.playing {
+     background: #28a745; /* Màu xanh khi đang phát */
 }
 
-#info-panel p {
-    margin: 0;
+
+/* Media Query cho màn hình rất nhỏ */
+@media (max-width: 480px) {
+    #controls {
+        grid-template-columns: 1fr 1fr; /* Luôn 2 cột */
+        gap: 3px; /* Giảm gap */
+    }
+    .control-group span, .control-group label {
+         display: none; /* Ẩn bớt chữ trên màn hình nhỏ */
+    }
+     #info-panel { gap: 5px; }
+    #controls button { padding: 10px 5px; } /* Tăng padding dọc */
+    .ammo-select { grid-column: span 2; } /* Chọn đạn chiếm cả hàng */
+    .fire { grid-column: span 2; } /* Nút bắn chiếm cả hàng */
+     .misc { grid-column: span 2; } /* Nút nhạc chiếm cả hàng */
+
 }
 
-/* Thêm style cho thanh máu (nếu muốn vẽ trên HTML thay vì canvas) */
-.health-bar {
-    width: 100px;
-    height: 10px;
-    background-color: red;
-    border: 1px solid black;
-    position: relative; /* Để chứa thanh máu bên trong */
+#loading-screen {
+    display: none; /* Ẩn ban đầu */
+    /* Các style khác giữ nguyên */
 }
-.health-fill {
-    height: 100%;
-    background-color: limegreen;
-    width: 100%; /* Sẽ thay đổi bằng JS */
+#loading-screen.visible {
+    display: flex !important; /* Hiện lên */
 }
